@@ -1,0 +1,11 @@
+SIZE_WINDOW = (1280,720)
+SIZE_HERO = (64,64)
+SPEED_BULLET = 10
+SIZE_BLOCK = (32,32)
+SIZE_BULLET = (16,16)
+SPEED_HERO = 3
+
+PATH_IMAGE = 'source/image/' 
+BLOCK_IMAGE = PATH_IMAGE+'block.png'
+BULLET_IMAGE = PATH_IMAGE+'bullet.png'
+HERO_IMAGE = PATH_IMAGE + 'playerOgyrcoro.png'
