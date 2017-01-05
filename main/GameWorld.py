@@ -51,13 +51,16 @@ class GameWorld():
 		for i in self.bullets:
 			i.update()
 			if i.tick >=30:
-				self.bullets.remove(i)
-			isCol, obj = self.collide(i)
+				if i in self.bullets:
+					self.bullets.remove(i)
+			isCol, objs = self.collide(i)
 			if isCol:
-				obj.life -=1
-				if obj.life <= 0:
-					self.map.remove(obj)
-				self.bullets.remove(i)
+				for obj in objs:
+					obj.life -=1
+					if obj.life <= 0:
+						self.map.remove(obj)
+				if i in self.bullets:
+					self.bullets.remove(i)
 	
 
 	def draw(self,window):
@@ -82,10 +85,11 @@ class GameWorld():
 
 
 	def collide(self,obj):
+		collides = list()
 		for i in self.map:
 			if self.checkColWith(i,obj):
-				return True,i
-		return False,None
+				collides.append(i)
+		return collides != [],collides
 
 	'''
 	def checkColWithBlocks(self,obj):

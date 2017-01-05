@@ -10,7 +10,7 @@ class Game():
 
 	def start(self):
 		pygame.init()
-		self.pl = Player.Player([0,0],CONST.SIZE_HERO,CONST.HERO_IMAGE)
+		self.pl = Player.Player([50,50],CONST.SIZE_HERO,CONST.HERO_IMAGE)
 		self.gameWorld = GameWorld.GameWorld()
 		self.window = pygame.display.set_mode(CONST.SIZE_WINDOW)
 		self.left,self.right,self.up,self.down,self.fire = False,False,False,False,False		
@@ -28,7 +28,6 @@ class Game():
 		pygame.display.update()
 
 	def updateEvent(self):
-		self.gameWorld.update()
 		for e in pygame.event.get():
 				if e.type == QUIT:
 					sys.exit(0)
@@ -55,6 +54,7 @@ class Game():
 					if e.key == K_SPACE:
 						self.fire = False
 		self.pl.update(self.left,self.right,self.up,self.down,self.fire,self.gameWorld,self.time)
+		self.gameWorld.update()
 
 
 

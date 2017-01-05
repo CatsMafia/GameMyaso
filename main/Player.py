@@ -14,15 +14,47 @@ class Player(GameObject):
 
 	def update(self,left,right,up,down,fire,gameWorld,time):
 		self.timer += time
-
+		isCol,colls = gameWorld.collide(self)
 		if left:
-			self.pos[0] -=self.speed
+			if isCol:
+				for i in colls:
+					if i.imageCoor[0] < self.imageCoor[0] and i.imageCoor[0]+i.size[0] > self.imageCoor[0]:
+						print('asdsad')
+						break
+				else:
+					self.pos[0] -=self.speed
+			else:
+				self.pos[0] -=self.speed
+
 		if right:
-			self.pos[0] +=self.speed
+			if isCol:
+				for i in colls:
+					if i.imageCoor[0] > self.imageCoor[0] and i.imageCoor[0] < self.imageCoor[0]+self.size[0]:
+						break
+				else:
+					self.pos[0] +=self.speed
+			else:
+				self.pos[0] +=self.speed				
 		if up:
-			self.pos[1] -=self.speed
+			if isCol:
+				for i in colls:
+					if i.imageCoor[1] < self.imageCoor[1] and i.imageCoor[1]+i.size[1] > self.imageCoor[1]:
+						print('asdsad')
+						break
+				else:
+					self.pos[1] -=self.speed
+			else:
+				self.pos[1] -=self.speed
+
 		if down:
-			self.pos[1] +=self.speed
+			if isCol:
+				for i in colls:
+					if i.imageCoor[1] > self.imageCoor[1] and i.imageCoor[1] < self.imageCoor[1]+self.size[1]:
+						break
+				else:
+					self.pos[1] +=self.speed
+			else:
+				self.pos[1] +=self.speed
 		if fire:
 			self.fire(gameWorld)
 			
