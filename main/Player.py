@@ -9,11 +9,13 @@ class Player(GameObject):
 	
 	def __init__(self,pos,size,image):
 		super().__init__(pos,size,image)
+		print('coor = ',self.imageCoor,' pos = ',self.pos)
 		self.timer = 0
 		self.speed  =CONST.SPEED_HERO
 
 	def update(self,left,right,up,down,fire,gameWorld,time):
 		self.timer += time
+
 		isCol,colls = gameWorld.collide(self)
 		if left:
 			if isCol:
@@ -29,7 +31,7 @@ class Player(GameObject):
 		if right:
 			if isCol:
 				for i in colls:
-					if i.imageCoor[0] > self.imageCoor[0] and i.imageCoor[0] < self.imageCoor[0]+self.size[0]:
+					if i.imageCoor[0] > self.imageCoor[0] and i.imageCoor[0] <= self.imageCoor[0]+self.size[0]:
 						break
 				else:
 					self.pos[0] +=self.speed
@@ -49,7 +51,7 @@ class Player(GameObject):
 		if down:
 			if isCol:
 				for i in colls:
-					if i.imageCoor[1] > self.imageCoor[1] and i.imageCoor[1] < self.imageCoor[1]+self.size[1]:
+					if i.imageCoor[1] >= self.imageCoor[1] and i.imageCoor[1] <= self.imageCoor[1]+self.size[1]:
 						break
 				else:
 					self.pos[1] +=self.speed
@@ -60,7 +62,8 @@ class Player(GameObject):
 			
 	def fire(self,gameWorld):
 		if self.timer > 250:
-			b =Bullet(pos = self.pos,size = CONST.SIZE_BULLET,image = CONST.BULLET_IMAGE,direction = 0)
+			b =Bullet(self.pos,CONST.SIZE_BULLET,CONST.BULLET_IMAGE,0)
+			print('coor = ',self.imageCoor,' pos = ',self.pos)
 			gameWorld.bullets.append(b)
 			self.timer = 0
 

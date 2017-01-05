@@ -6,15 +6,18 @@ from pygame import *
 
 class GameObject():
 
-	def __init__(self,pos,size,imagePath):
-		self.pos = [mathM.fabs((pos[0]+size[0])/2),mathM.fabs((pos[1]+size[1])/2)]
+	def __init__(self,posCoor,size,imagePath):
+		self.pos = [posCoor[0]+size[0]//2,posCoor[1]+size[1]//2]
 		self.size = size
-		self.imageCoor = pos
+		self.imageCoor = posCoor
 		self.image = Surface(size)
-		self.image = image.load(imagePath)
+		if imagePath != None:
+			self.image = image.load(imagePath)
+		else:
+			self.image.fill((0,0,0))
 
 	def draw(self,window):
-		self.imageCoor = [mathM.fabs(self.pos[0]*2-self.size[0]),mathM.fabs(self.pos[1]*2-self.size[1])]
+		self.imageCoor = [self.pos[0]-self.size[0]//2,self.pos[1]-self.size[1]//2]
 		window.blit(self.image,self.imageCoor)
 
 
@@ -27,7 +30,7 @@ class Block(GameObject):
 
 class Bullet(GameObject):
 	def __init__(self,pos,size,image,direction):
-		posCoor = [mathM.fabs(pos[0]*2-size[0]),mathM.fabs(pos[1]*2-size[1])]
+		posCoor = [pos[0]-size[0]//2,pos[1]-size[1]/2]
 		super().__init__(posCoor,size,image)
 		self.direction = direction
 		self.speed = CONST.SPEED_BULLET
@@ -79,7 +82,6 @@ class GameWorld():
 					b = Block([j*CONST.SIZE_BLOCK[0],i*CONST.SIZE_BLOCK[1]],CONST.SIZE_BLOCK,CONST.BLOCK_IMAGE)
 					res.append(b)
 
-		res.sort(key = lambda x: x.pos[1])
 		return res
 
 
