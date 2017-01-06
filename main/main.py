@@ -10,10 +10,10 @@ class Game():
 
 	def start(self):
 		pygame.init()
-		self.pl = Player.Player([50,50],CONST.SIZE_HERO,CONST.HERO_IMAGE)
+		self.pl = Player.Player([128,128],CONST.SIZE_HERO,CONST.HERO_IMAGE)
 		self.gameWorld = GameWorld.GameWorld()
 		self.window = pygame.display.set_mode(CONST.SIZE_WINDOW)
-		self.left,self.right,self.up,self.down,self.fire = False,False,False,False,False		
+		self.left,self.right,self.up,self.down,self.fire,self.direction = False,False,False,False,False,0
 		pygame.display.set_caption('MyasoRubka')
 		self.timer = pygame.time.Clock()
 		while 1 :
@@ -40,8 +40,8 @@ class Game():
 						self.up = True
 					if e.key == K_DOWN:
 						self.down = True
-					if e.key == K_SPACE:
-						self.fire = True
+					if e.key == K_q:
+						sys.exit(0)
 				elif e.type == KEYUP:
 					if e.key == K_LEFT:
 						self.left = False
@@ -51,9 +51,16 @@ class Game():
 						self.up = False
 					if e.key == K_DOWN:
 						self.down = False
-					if e.key == K_SPACE:
+				elif e.type == MOUSEBUTTONDOWN:
+					if e.button == 1:
+						self.fire = True
+				elif e.type == MOUSEBUTTONUP:
+					if e.button == 1:
 						self.fire = False
-		self.pl.update(self.left,self.right,self.up,self.down,self.fire,self.gameWorld,self.time)
+						self.direction = 0
+		if self.fire:
+			self.direction = pygame.mouse.get_pos()
+		self.pl.update(self.left,self.right,self.up,self.down,self.fire,self.direction,self.gameWorld,self.time)
 		self.gameWorld.update()
 
 

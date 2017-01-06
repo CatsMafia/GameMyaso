@@ -38,8 +38,8 @@ class Bullet(GameObject):
 
 
 	def update(self):
-		self.pos[0] += self.speed if mathM.tan(self.direction) == 0 else self.speed /mathM.tan(self.direction)
-		self.pos[1] += self.speed * mathM.tan(self.direction)
+		self.pos[0] += self.speed*mathM.cos(self.direction)
+		self.pos[1] += self.speed*mathM.sin(self.direction)
 		self.tick +=1
 
 class GameWorld():
