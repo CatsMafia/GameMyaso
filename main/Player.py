@@ -6,13 +6,14 @@ from GameWorld import GameObject
 from GameWorld import Bullet
 
 class Player(GameObject):
+
 	
 	def __init__(self,pos,size,image):
 		super().__init__(pos,size,image)
-		self.boxColRight = GameObject([pos[0]+CONST.SIZE_HERO[0],pos[1]+CONST.SPEED_HERO+5],[1,size[1]-2*CONST.SPEED_HERO-10],None)
-		self.boxColLeft = GameObject([pos[0]-1,pos[1]+CONST.SPEED_HERO+5],[1,size[1]-2*CONST.SPEED_HERO-10],None)
-		self.boxColUp = GameObject([pos[0],pos[1]+CONST.SPEED_HERO],[CONST.SIZE_HERO[0],1],None)
-		self.boxColDown = GameObject([pos[0],pos[1]+CONST.SIZE_HERO[1]-CONST.SPEED_HERO],[CONST.SIZE_HERO[0],1],None)
+		self.boxColRight = GameObject([pos[0]+CONST.SIZE_HERO[0],pos[1]+CONST.SPEED_HERO+5],[2,size[1]-2*CONST.SPEED_HERO-10],None)
+		self.boxColLeft = GameObject([pos[0]-2,pos[1]+CONST.SPEED_HERO+5],[2,size[1]-2*CONST.SPEED_HERO-10],None)
+		self.boxColUp = GameObject([pos[0]+CONST.SPEED_HERO,pos[1]+CONST.SPEED_HERO],[CONST.SIZE_HERO[0]-2*CONST.SPEED_HERO,1],None)
+		self.boxColDown = GameObject([pos[0]+CONST.SPEED_HERO,pos[1]+CONST.SIZE_HERO[1]-CONST.SPEED_HERO],[CONST.SIZE_HERO[0]-2*CONST.SPEED_HERO,1],None)
 		self.timer = 0
 		self.speed  =CONST.SPEED_HERO
 		self.direction = 0
@@ -20,13 +21,8 @@ class Player(GameObject):
 
 	def update(self,left,right,up,down,fire,coorFire,gameWorld,time):
 		self.timer += time
-		if coorFire == 0:
-			self.direction = 0
-		else:
-			self.direction = (math.copysign(math.pi/2,coorFire[1]-self.pos[1]) if (coorFire[0]-self.pos[0])== 0 else math.atan((coorFire[1]-self.pos[1])/(coorFire[0]-self.pos[0])))+math.pi*int(coorFire[0]<self.pos[0])
-			
+		
 		if left:
-			
 			if not gameWorld.collide(self.boxColLeft)[0]:
 				self.move(-CONST.SPEED_HERO,0)
 		if right:
@@ -39,9 +35,13 @@ class Player(GameObject):
 		
 		if down:
 			if not gameWorld.collide(self.boxColDown)[0]:
-				self.move(0,+CONST.SPEED_HERO)
+				self.move(0,CONST.SPEED_HERO)
 
 		if fire:
+			if coorFire == 0:
+				self.direction = 0
+			else:
+				self.direction = (math.copysign(math.pi/2,coorFire[1]-self.pos[1]) if (coorFire[0]-self.pos[0])== 0 else math.atan((coorFire[1]-self.pos[1])/(coorFire[0]-self.pos[0])))+math.pi*int(coorFire[0]<self.pos[0])
 			self.fire(gameWorld,self.direction)
 	
 	def move(self,moveDX = 0,moveDY = 0):
